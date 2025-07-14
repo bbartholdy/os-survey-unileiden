@@ -1,0 +1,373 @@
+---
+title: Open Science Survey
+logo: "images/oscl-logo.png"
+format: 
+  dashboard:
+    theme: custom.scss
+server: shiny
+---
+
+```{r}
+#| context: setup
+
+#library(here)
+library(dplyr)
+library(ggplot2)
+library(shiny)
+library(stringi)
+library(forcats)
+library(tidyr)
+
+ggplot2::theme_set(ggplot2::theme_minimal())
+load("data/responses.rda")
+load("data/questions.rda")
+response_data <- responses
+multiple_choice <- c(
+  "familiarity",
+  "implement",
+  "motivation",
+  "barriers",
+  "stimulate"
+)
+sci_support <- c(
+  "Policy advisor", 
+  "Organisational Professional / Support Staff"
+  )
+sci_staff <- c(
+  "PhD candidate",
+  "Postdoc",
+  "Assistant Professor",
+  "Associate Professor",
+  "Full Professor",
+  "Researcher",
+  "Teacher"
+)
+sci_staff_responses <- filter(response_data, position %in% sci_staff)
+sci_support_responses <- filter(response_data, position %in% sci_support)
+faculties <- unique(response_data$faculty)
+```
+
+
+# Survey statistics
+
+## Row {height="18%"}
+
+```{r}
+#| content: valuebox
+#| title: "Total responses"
+list(
+  icon = "reply-all",
+  color = "primary",
+  value = nrow(filter(response_data, wave == 2023))
+)
+```
+
+
+```{r}
+library(bslib)
+library(bsicons)
+value_box(
+  title = "Responses in Selection",
+  value = textOutput("nSelect"),
+  showcase = bs_icon("filter"),
+  theme = value_box_theme(bg = "#a8c9da", fg = "#001158"),
+  #min_height = "200px"
+)
+```
+
+```{r}
+value_box(
+  title = "Median response time",
+  value = textOutput("responseTime"),
+  showcase = bs_icon("clock"),
+  theme = value_box_theme(bg = "#0070c0", fg = "#fff"),
+  #min_height = "200px"
+)
+```
+
+## Row {height="18%"}
+
+```{r}
+#| content: valuebox
+#| title: "Total responses"
+list(
+  icon = "reply-all",
+  color = "primary",
+  value = nrow(filter(response_data, wave == 2025))
+)
+```
+
+
+```{r}
+library(bslib)
+library(bsicons)
+value_box(
+  title = "Responses in Selection",
+  value = textOutput("nSelect"),
+  showcase = bs_icon("filter"),
+  theme = value_box_theme(bg = "#a8c9da", fg = "#001158"),
+  #min_height = "200px"
+)
+```
+
+```{r}
+value_box(
+  title = "Median response time",
+  value = textOutput("responseTime"),
+  showcase = bs_icon("clock"),
+  theme = value_box_theme(bg = "#0070c0", fg = "#fff"),
+  #min_height = "200px"
+)
+```
+
+## Column {.tabset title="Responses from academic positions"}
+
+```{r}
+#| content: card-toolbar
+selectInput("facultyInput", "Faculty", choices = c("All", na.omit(faculties)))
+#radioButtons("group", "Response type", choices = c("Sci staff", "Sci support"))
+```
+
+### 2023
+
+```{r}
+plotOutput("faculty_response_plot")
+```
+
+### 2025
+
+```{r}
+plotOutput("faculty_response_plot_2025")
+```
+
+# Responses
+
+<!-- ## {.sidebar}
+
+```{r}
+selectInput("facultyInput2", "Faculty", choices = c("All", faculties))
+radioButtons("groupInput", "Group by", choices = c("none", "position", "faculty"))
+``` 
+-->
+
+## Row
+
+```{r}
+#| content: card-toolbar
+#| title: Question text
+selectInput("questionInput", "", choices = c(multiple_choice))
+```
+
+::: {.card height="20%" width="70%"}
+
+```{r}
+textOutput("question")
+```
+
+:::
+
+```{r}
+#| content: toolbar
+#| height: 240
+selectInput("facultyInput2", "Faculty", choices = c("All", faculties))
+radioButtons("groupInput", "Group by", choices = c("none", "position", "faculty"))
+```
+
+## Responses
+
+### Row {.tabset title="Table with number of responses per option"}
+
+#### 2023
+
+```{r}
+plotOutput("responses_plot_2023")
+```
+
+```{r}
+tableOutput("responses_tbl_2023")
+```
+
+#### 2025
+
+```{r}
+plotOutput("responses_plot_2025")
+```
+
+```{r}
+tableOutput("responses_tbl_2025")
+```
+
+
+# Data
+
+```{r}
+dataTableOutput("datatable")
+```
+
+# About
+
+::: {.card title="Summary"}
+
+![](images/comb-logo.png){width="500"}
+
+This quickscan was conducted in 2023 to explore how staff and researchers at Leiden University are engaging with Open
+Science. What are the common incentives and barriers, and what more can the University
+do to encourage more open research? The
+[Open Science Community Leiden](https://www.universiteitleiden.nl/open-science-community-leiden)
+teamed up with the Leiden University
+[Open Science Program](https://www.staff.universiteitleiden.nl/news/2022/11/academia-in-motion-the-university-is-making-headway-towards-better-academic-practice?cf=service-units)
+to create this quickscan for assessing the Open Science engagement among university researchers, policy advisors, and
+support staff. The results will be used to inform development of resources, and identify areas in
+need of improvement, to move Leiden University towards a more open future.
+
+:::
+
+
+```{r}
+#| label: question-dict
+#| title: Question code dictionary
+questions |>
+  mutate(question = stri_replace_all(question, "", fixed = "\n")) |>
+  select(!c(qid, force_resp)) |>
+  knitr::kable(col.names = c("Code", "Question", "Options"))
+```
+
+
+<!-- Server -->
+
+```{r}
+#| context: server
+
+statistics_data <- reactive({
+  if(input$facultyInput != "All"){
+    filter(response_data, faculty == input$facultyInput)
+  } else {
+    response_data
+  }
+})
+
+responses <- reactive({
+    if(input$facultyInput2 != "All"){
+    filter(response_data, faculty == input$facultyInput2)
+  } else {
+    response_data
+  }
+})
+
+## Survey statistics
+output$nSelect <- renderText({
+  nrow(statistics_data())
+})
+
+# median response time for value box
+output$responseTime <- renderText({
+  paste(round(median(statistics_data()$Duration, na.rm = TRUE) / 60), "mins")
+})
+
+output$faculty_response_plot <- renderPlot({
+  statistics_data() |>
+  filter(
+    !is.na(position),
+    wave == 2023
+  ) |>
+    ggplot(aes(y = fct_rev(fct_infreq(position)))) +
+      geom_bar(fill = "#0070c0") +
+      labs(y = "Position")
+})
+
+output$faculty_response_plot_2025 <- renderPlot({
+  statistics_data() |>
+  filter(
+    !is.na(position),
+    wave == 2025
+  ) |>
+    ggplot(aes(y = fct_rev(fct_infreq(position)))) +
+      geom_bar(fill = "#0070c0") +
+      labs(y = "Position")
+})
+
+## Responses
+output$question <- renderText({
+  filter(questions, qname == input$questionInput)$question
+})
+
+# Reactive plot showing number of responses to selected question
+
+output$responses_plot_2023 <- renderPlot({
+  pl_data <- responses() |>
+    select(!contains("TEXT")) |>
+    filter(wave == 2023) |>
+    pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
+    mutate(resp = stringr::str_wrap(resp, width = 40)) |> # make long options wrap around
+    remove_missing(vars = "resp")
+  pl <- pl_data |>
+    ggplot(aes(y = fct_rev(fct_infreq(resp)), fill = input$questionInput)) +
+      geom_bar() +
+      labs(y = "Response option")
+  
+  if(input$groupInput != "none") pl + scale_fill_viridis_d() + aes(fill = .data[[input$groupInput]]) + theme(legend.position = "bottom") else pl
+      
+})
+
+output$responses_plot_2025 <- renderPlot({
+  pl_data <- responses() |>
+    select(!contains("TEXT")) |>
+    filter(wave == 2025) |>
+    pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
+    mutate(resp = stringr::str_wrap(resp, width = 40)) |> # make long options wrap around
+    remove_missing(vars = "resp")
+  pl <- pl_data |>
+    ggplot(aes(y = fct_rev(fct_infreq(resp)), fill = input$questionInput)) +
+      geom_bar() +
+      labs(y = "Response option")
+  
+  if(input$groupInput != "none") pl + scale_fill_viridis_d() + aes(fill = .data[[input$groupInput]]) + theme(legend.position = "bottom") else pl
+      
+})
+
+output$responses_tbl_2023 <- renderTable({
+  responses() |>
+    select(!contains("TEXT")) |>
+    filter(wave == 2023) |>
+    pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
+    remove_missing(vars = "resp") |>
+    (\(x) if(input$groupInput != "none") group_by(x, .data[[input$groupInput]]) else x )() |>
+    count(resp) |>
+    arrange(desc(n), .by_group = TRUE) |>
+    rename(Option = resp) # rename column for table
+})
+
+output$responses_tbl_2025 <- renderTable({
+  responses() |>
+    select(!contains("TEXT")) |>
+    filter(wave == 2025) |>
+    pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
+    remove_missing(vars = "resp") |>
+    (\(x) if(input$groupInput != "none") group_by(x, .data[[input$groupInput]]) else x )() |>
+    count(resp) |>
+    arrange(desc(n), .by_group = TRUE) |>
+    rename(Option = resp) # rename column for table
+})
+
+## Data
+output$datatable <- DT::renderDT({
+  response_data |>
+    select(!c(ends_with("TEXT"))) |>
+    mutate(across( # convert to factor for better filtering with DT
+      position |
+        starts_with("barriers") |
+        starts_with("familiarity") |
+        starts_with("implement") |
+        starts_with("stimulate"),
+      as.factor
+    )) |>
+    DT::datatable(
+      filter = "top",
+      extensions = "Buttons",
+      options = list(
+        dom = "Bftip",
+        buttons = c("csv", "excel", "colvis")
+      )
+    )
+})
+```
