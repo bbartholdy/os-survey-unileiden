@@ -54,34 +54,35 @@ faculties <- unique(response_data$faculty)
 ## Row {height="18%"}
 
 ```{r}
-#| content: valuebox
-#| title: "Total responses"
-list(
-  icon = "reply-all",
-  color = "primary",
-  value = nrow(filter(response_data, wave == 2023))
+value_box(
+  title = "2023",
+  value = nrow(filter(response_data, wave == 2023)),
+  showcase = bs_icon("reply-all"),
+  theme = value_box_theme(bg = "#001158a3", fg = "#fff"),
+  strong("Total responses")
+  #min_height = "200px"
 )
 ```
 
 
 ```{r}
-library(bslib)
-library(bsicons)
 value_box(
-  title = "Responses in Selection",
+  title = "2023",
   value = textOutput("nSelect"),
   showcase = bs_icon("filter"),
-  theme = value_box_theme(bg = "#a8c9da", fg = "#001158"),
+  theme = value_box_theme(bg = "#a8c9daa3", fg = "#001158a3"),
+  strong("Responses in Selection"),
   #min_height = "200px"
 )
 ```
 
 ```{r}
 value_box(
-  title = "Median response time",
+  title = "2023",
   value = textOutput("responseTime"),
   showcase = bs_icon("clock"),
-  theme = value_box_theme(bg = "#0070c0", fg = "#fff"),
+  theme = value_box_theme(bg = "#0070c0a3", fg = "#fff"),
+  strong("Median response time")
   #min_height = "200px"
 )
 ```
@@ -89,34 +90,35 @@ value_box(
 ## Row {height="18%"}
 
 ```{r}
-#| content: valuebox
-#| title: "Total responses"
-list(
-  icon = "reply-all",
-  color = "primary",
-  value = nrow(filter(response_data, wave == 2025))
+value_box(
+  title = "2025",
+  value = nrow(filter(response_data, wave == 2025)),
+  showcase = bs_icon("reply-all"),
+  theme = value_box_theme(bg = "#001158", fg = "#fff"),
+  strong("Total responses")
+  #min_height = "200px"
 )
 ```
 
 
 ```{r}
-library(bslib)
-library(bsicons)
 value_box(
-  title = "Responses in Selection",
-  value = textOutput("nSelect"),
+  title = "2025",
+  value = textOutput("nSelect2025"),
   showcase = bs_icon("filter"),
   theme = value_box_theme(bg = "#a8c9da", fg = "#001158"),
+  strong("Responses in Selection")
   #min_height = "200px"
 )
 ```
 
 ```{r}
 value_box(
-  title = "Median response time",
-  value = textOutput("responseTime"),
+  title = "2025",
+  value = textOutput("responseTime2025"),
   showcase = bs_icon("clock"),
   theme = value_box_theme(bg = "#0070c0", fg = "#fff"),
+  strong("Median response time")
   #min_height = "200px"
 )
 ```
@@ -129,29 +131,22 @@ selectInput("facultyInput", "Faculty", choices = c("All", na.omit(faculties)))
 #radioButtons("group", "Response type", choices = c("Sci staff", "Sci support"))
 ```
 
-### 2023
-
-```{r}
-plotOutput("faculty_response_plot")
-```
-
 ### 2025
 
 ```{r}
 plotOutput("faculty_response_plot_2025")
 ```
 
-# Responses
-
-<!-- ## {.sidebar}
+### 2023
 
 ```{r}
-selectInput("facultyInput2", "Faculty", choices = c("All", faculties))
-radioButtons("groupInput", "Group by", choices = c("none", "position", "faculty"))
-``` 
--->
+plotOutput("faculty_response_plot")
+```
 
-## Row
+# Responses
+
+
+## Row {height="20%"}
 
 ```{r}
 #| content: card-toolbar
@@ -220,6 +215,8 @@ teamed up with the Leiden University
 to create this quickscan for assessing the Open Science engagement among university researchers, policy advisors, and
 support staff. The results will be used to inform development of resources, and identify areas in
 need of improvement, to move Leiden University towards a more open future.
+
+We are currently in the process of preparing another wave of the survey. It will be started during Open Science Week 2025.
 
 :::
 
