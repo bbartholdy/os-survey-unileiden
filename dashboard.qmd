@@ -17,6 +17,8 @@ library(shiny)
 library(stringi)
 library(forcats)
 library(tidyr)
+library(bslib)
+library(bsicons)
 
 ggplot2::theme_set(ggplot2::theme_minimal())
 load("data/responses.rda")
@@ -154,36 +156,22 @@ plotOutput("faculty_response_plot")
 selectInput("questionInput", "", choices = c(multiple_choice))
 ```
 
-::: {.card height="20%" width="70%"}
-
 ```{r}
 textOutput("question")
 ```
 
-:::
+## Row {height="20%"}
 
 ```{r}
 #| content: toolbar
-#| height: 240
 selectInput("facultyInput2", "Faculty", choices = c("All", faculties))
 radioButtons("groupInput", "Group by", choices = c("none", "position", "faculty"))
 ```
 
-## Responses
 
-### Row {.tabset title="Table with number of responses per option"}
+## Row {.tabset title="Table with number of responses per option" height="60%"}
 
-#### 2023
-
-```{r}
-plotOutput("responses_plot_2023")
-```
-
-```{r}
-tableOutput("responses_tbl_2023")
-```
-
-#### 2025
+### 2025
 
 ```{r}
 plotOutput("responses_plot_2025")
@@ -191,6 +179,16 @@ plotOutput("responses_plot_2025")
 
 ```{r}
 tableOutput("responses_tbl_2025")
+```
+
+### 2023
+
+```{r}
+plotOutput("responses_plot_2023")
+```
+
+```{r}
+tableOutput("responses_tbl_2023")
 ```
 
 
@@ -236,37 +234,61 @@ questions |>
 ```{r}
 #| context: server
 
-statistics_data <- reactive({
+statistics_data_2023 <- reactive({
   if(input$facultyInput != "All"){
-    filter(response_data, faculty == input$facultyInput)
+    filter(response_data, faculty == input$facultyInput, wave == 2023)
   } else {
-    response_data
+    filter(response_data, wave == 2023)
+  }
+})
+
+statistics_data_2025 <- reactive({
+  if(input$facultyInput != "All"){
+    filter(response_data, faculty == input$facultyInput, wave == 2025)
+  } else {
+    filter(response_data, wave == 2025)
   }
 })
 
 responses <- reactive({
     if(input$facultyInput2 != "All"){
-    filter(response_data, faculty == input$facultyInput2)
+    filter(response_data, faculty == input$facultyInput2, wave == 2023)
   } else {
-    response_data
+    filter(response_data, wave == 2023)
   }
 })
 
-## Survey statistics
+responses_2025 <- reactive({
+    if(input$facultyInput2 != "All"){
+    filter(response_data, faculty == input$facultyInput2, wave == 2025)
+  } else {
+    filter(response_data, wave == 2025)
+  }
+})
+
+## PAGE: Survey statistics
+# Value boxes
 output$nSelect <- renderText({
-  nrow(statistics_data())
+  nrow(statistics_data_2023())
+})
+
+output$nSelect2025 <- renderText({
+  nrow(statistics_data_2025())
 })
 
 # median response time for value box
 output$responseTime <- renderText({
-  paste(round(median(statistics_data()$Duration, na.rm = TRUE) / 60), "mins")
+  paste(round(median(statistics_data_2023()$Duration, na.rm = TRUE) / 60), "mins")
+})
+
+output$responseTime2025 <- renderText({
+  paste(round(median(statistics_data_2025()$Duration, na.rm = TRUE) / 60), "mins")
 })
 
 output$faculty_response_plot <- renderPlot({
-  statistics_data() |>
+  statistics_data_2023() |>
   filter(
-    !is.na(position),
-    wave == 2023
+    !is.na(position)
   ) |>
     ggplot(aes(y = fct_rev(fct_infreq(position)))) +
       geom_bar(fill = "#0070c0") +
@@ -274,17 +296,16 @@ output$faculty_response_plot <- renderPlot({
 })
 
 output$faculty_response_plot_2025 <- renderPlot({
-  statistics_data() |>
+  statistics_data_2025() |>
   filter(
-    !is.na(position),
-    wave == 2025
+    !is.na(position)
   ) |>
     ggplot(aes(y = fct_rev(fct_infreq(position)))) +
       geom_bar(fill = "#0070c0") +
       labs(y = "Position")
 })
 
-## Responses
+## PAGE: Responses
 output$question <- renderText({
   filter(questions, qname == input$questionInput)$question
 })
@@ -294,39 +315,37 @@ output$question <- renderText({
 output$responses_plot_2023 <- renderPlot({
   pl_data <- responses() |>
     select(!contains("TEXT")) |>
-    filter(wave == 2023) |>
     pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
     mutate(resp = stringr::str_wrap(resp, width = 40)) |> # make long options wrap around
     remove_missing(vars = "resp")
   pl <- pl_data |>
-    ggplot(aes(y = fct_rev(fct_infreq(resp)), fill = input$questionInput)) +
+    ggplot(aes(y = fct_rev(fct_infreq(resp)))) +
       geom_bar() +
-      labs(y = "Response option")
+      labs(y = "Response option") +
+      theme(legend.position = "none")
   
-  if(input$groupInput != "none") pl + scale_fill_viridis_d() + aes(fill = .data[[input$groupInput]]) + theme(legend.position = "bottom") else pl
+  if(input$groupInput != "none") pl + scale_fill_viridis_d() + aes(fill = .data[[input$groupInput]]) + theme(legend.position = "top") else pl
       
 })
 
 output$responses_plot_2025 <- renderPlot({
-  pl_data <- responses() |>
+  pl_data <- responses_2025() |>
     select(!contains("TEXT")) |>
-    filter(wave == 2025) |>
     pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
-    mutate(resp = stringr::str_wrap(resp, width = 40)) |> # make long options wrap around
+    mutate(resp = stringr::str_wrap(resp, width = 30)) |> # make long options wrap around
     remove_missing(vars = "resp")
   pl <- pl_data |>
-    ggplot(aes(y = fct_rev(fct_infreq(resp)), fill = input$questionInput)) +
+    ggplot(aes(y = fct_rev(fct_infreq(resp)))) +
       geom_bar() +
       labs(y = "Response option")
   
-  if(input$groupInput != "none") pl + scale_fill_viridis_d() + aes(fill = .data[[input$groupInput]]) + theme(legend.position = "bottom") else pl
+  if(input$groupInput != "none") pl + scale_fill_viridis_d() + aes(fill = .data[[input$groupInput]]) + theme(legend.position = "top") else pl
       
 })
 
 output$responses_tbl_2023 <- renderTable({
   responses() |>
     select(!contains("TEXT")) |>
-    filter(wave == 2023) |>
     pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
     remove_missing(vars = "resp") |>
     (\(x) if(input$groupInput != "none") group_by(x, .data[[input$groupInput]]) else x )() |>
@@ -336,9 +355,8 @@ output$responses_tbl_2023 <- renderTable({
 })
 
 output$responses_tbl_2025 <- renderTable({
-  responses() |>
+  responses_2025() |>
     select(!contains("TEXT")) |>
-    filter(wave == 2025) |>
     pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
     remove_missing(vars = "resp") |>
     (\(x) if(input$groupInput != "none") group_by(x, .data[[input$groupInput]]) else x )() |>
