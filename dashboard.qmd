@@ -22,6 +22,7 @@ ggplot2::theme_set(ggplot2::theme_minimal())
 load("data/responses.rda")
 load("data/questions.rda")
 response_data <- responses
+questions <- mutate(questions, options = gsub(";", "<br>", options))
 multiple_choice <- c(
   "familiarity",
   "implement",
@@ -227,7 +228,7 @@ need of improvement, to move Leiden University towards a more open future.
 #| label: question-dict
 #| title: Question code dictionary
 questions |>
-  mutate(question = stri_replace_all(question, "", fixed = "\n")) |>
+  mutate(question = gsub("\n", "", question)) |>
   select(!c(qid, force_resp)) |>
   knitr::kable(col.names = c("Code", "Question", "Options"))
 ```
