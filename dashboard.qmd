@@ -200,7 +200,7 @@ dataTableOutput("datatable")
 
 # About
 
-::: {.card title="Summary"}
+::: {.card title="Summary" fill="false"}
 
 ![](images/comb-logo.png){width="500"}
 
@@ -215,9 +215,7 @@ support staff. The results will be used to inform development of resources, and 
 need of improvement, to move Leiden University towards a more open future.
 
 We are currently in the process of preparing another wave of the survey. It will be started during Open Science Week 2025.
-
 :::
-
 
 ```{r}
 #| label: question-dict
