@@ -11,6 +11,14 @@ $navbar-fg: $primary;
 .card {
   --bs-card-cap-bg: rgba(0, 17, 88, 0.90);
   --bs-card-title-color: white;
+
+  a.nav-link {
+    color: $white;
+
+    .active {
+      color: $primary;
+    }
+  }
 }
 
 .card-toolbar {
