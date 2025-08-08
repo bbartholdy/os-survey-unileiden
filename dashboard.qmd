@@ -147,8 +147,7 @@ plotOutput("faculty_response_plot")
 
 # Responses
 
-
-## Row {height="20%"}
+## Row {height="16%"}
 
 ```{r}
 #| content: card-toolbar
@@ -157,10 +156,9 @@ selectInput("questionInput", "", choices = c(multiple_choice))
 ```
 
 ```{r}
+#| width: "60%"
 textOutput("question")
 ```
-
-## Row {height="20%"}
 
 ```{r}
 #| content: toolbar
@@ -169,7 +167,7 @@ radioButtons("groupInput", "Group by", choices = c("none", "position", "faculty"
 ```
 
 
-## Row {.tabset title="Table with number of responses per option" height="60%"}
+## Row {.tabset title="Table with number of responses per option"}
 
 ### 2025
 
@@ -178,7 +176,7 @@ plotOutput("responses_plot_2025")
 ```
 
 ```{r}
-tableOutput("responses_tbl_2025")
+dataTableOutput("responses_tbl_2025")
 ```
 
 ### 2023
@@ -188,7 +186,7 @@ plotOutput("responses_plot_2023")
 ```
 
 ```{r}
-tableOutput("responses_tbl_2023")
+dataTableOutput("responses_tbl_2023")
 ```
 
 
@@ -341,7 +339,7 @@ output$responses_plot_2025 <- renderPlot({
       
 })
 
-output$responses_tbl_2023 <- renderTable({
+output$responses_tbl_2023 <- DT::renderDT({
   responses() |>
     select(!contains("TEXT")) |>
     pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
@@ -349,10 +347,11 @@ output$responses_tbl_2023 <- renderTable({
     (\(x) if(input$groupInput != "none") group_by(x, .data[[input$groupInput]]) else x )() |>
     count(resp) |>
     arrange(desc(n), .by_group = TRUE) |>
-    rename(Option = resp) # rename column for table
+    rename(Option = resp) |> # rename column for table
+    DT::datatable()
 })
 
-output$responses_tbl_2025 <- renderTable({
+output$responses_tbl_2025 <- DT::renderDT({
   responses_2025() |>
     select(!contains("TEXT")) |>
     pivot_longer(starts_with(input$questionInput), names_to = "code", values_to = "resp") |>
@@ -360,7 +359,8 @@ output$responses_tbl_2025 <- renderTable({
     (\(x) if(input$groupInput != "none") group_by(x, .data[[input$groupInput]]) else x )() |>
     count(resp) |>
     arrange(desc(n), .by_group = TRUE) |>
-    rename(Option = resp) # rename column for table
+    rename(Option = resp) |> # rename column for table
+    DT::datatable()
 })
 
 ## Data
