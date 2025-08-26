@@ -1,0 +1,38 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight
+
+name: Retrieve new survey responses from Qualtrics
+
+jobs:
+  update-responses:
+    runs-on: ubuntu-latest
+    env:
+      QUALTRICS_TOKEN: ${{ secrets.QUALTRICS_TOKEN }}
+      QUALTRICS_SURVEY: ${{ secrets.QUALTRICS_SURVEY }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install missing system dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt update && sudo apt install build-essential
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-renv@v2
+
+      - name: Run retrieve survey responses script
+        run: Rscript data-raw/00_retrieve-data-2025.R
+
+      - name: commit results
+        run: |
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git commit -am 'update responses' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
