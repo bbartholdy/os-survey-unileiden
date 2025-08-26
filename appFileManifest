@@ -1,0 +1,9 @@
+dashboard.html
+dashboard.qmd
+dashboard_files
+custom.scss
+images
+data
+renv.lock
+renv
+.Rprofile
