@@ -1,0 +1,44 @@
+qid,qname,question,force_resp,options
+QID28,Q28,"Open Science Quick Scan survey 2025
+ 
+
+At Leiden University we're working to make Open Science the norm. 
+
+ 
+
+Are you involved in conducting, teaching, advising on, or supporting research related activities at Leiden University? Then this survey is meant as an opportunity for you to help shape the practical steps we take to engage and support you. 
+
+ 
+
+Why. This survey aims to assess the level of engagement with Open Science at Leiden University, and to identify ways we can develop and improve. We will use the results to improve available resources and services in line with your needs. For instance those offered by the Open Science Community Leiden (OSCL) and the university-wide Academia in Motion programme.Why me? In order to get a broad view on Open Science at Leiden University, we need a broad range of perspectives. Your participation helps no matter your level of familiarity with or interest in Open Science. The results will allow us to compare Open Science engagement to a similar survey done in 2023, and learn how we've collectively developed since then. At the end of this survey, you will receive a sneak peak into the current results to show you how your participation contributes to our larger goal. 
+
+What. The survey will take about 5 to 10 minutes to complete. You will answer questions about what Open Science means to you.How. Responses are collected anonymously in Qualtrics. You will not be asked to provide any personally identifiable information. Therefore, once responses have been submitted, you will not be able to withdraw your responses from the survey. The questions are very broad and there is little risk of re-identifying a person based on the responses. We intend to archive and openly share the anonymised data, so that results can be reused and reproduced by anyone. Before making data open, any potential identifying text from open ended responses will be removed. By continuing to the survey, you are consenting to future publication of the anonymous survey responses.
+For more information, please contact:
+Bjørn Bartholdy (OSCL representative) and Anna van 't Veer (community manager): oscl@leidenuniv.nlKarlijn Hermans (OS programme coordinator): k.s.f.m.hermans@bb.leidenuniv.nl",FALSE,NA
+QID29,Q29,I agree to openly sharing my anonymised data:,TRUE,NA
+QID1,position,Your position:,FALSE,NA
+QID18,faculty,Your faculty / center:,FALSE,NA
+QID45,2025_new_q_other,"You have selected 'Other' as type of position, please choose how you would like to answer the remaining questions of this survey:",FALSE,NA
+QID2,familiarity,"With which of the following Open Science practices are you familiar?
+By familiar, we mean that you could broadly explain what the practice entails. You do not need to have implemented this practice yourself.",FALSE,NA
+QID42,stimulate,"In your opinion, which of the following Open Science practices are the most important to stimulate (pick maximum of 3)?",FALSE,NA
+QID26,implement,Which Open Science practices have you implemented in your research and/or teaching?,FALSE,NA
+QID19,motivation,"What are your main motivations for implementing Open Science?
+Please pick max. of 3",FALSE,NA
+QID34,barriers,"What are your main barriers to practicing (more) Open Science?
+Please pick max. of 3",FALSE,NA
+QID31,training_need,You indicated a lack of training as a barrier to practicing Open Science. Please elaborate on which topics you think training is helpful:,FALSE,NA
+QID35,more_OS,Which of the following would help you in practicing more Open Science?,FALSE,NA
+QID9,uni_support,What could the University/faculty (e.g. the Academia in Motion programme) do to help your research (or teaching) be more open?,FALSE,NA
+QID25,oscl_support,"What could the Open Science Community Leiden (OSCL) do to help engage your research community?
+
+Note that OSCL has two main goals: to stimulate peer-to-peer learning in your context and to help policymakers with a researcher perspective, in order to shape an open future according to researchers' needs",FALSE,NA
+QID40,practices_other,Which Open Science practices have you dealt with in a policy-making or research-support situation?,FALSE,NA
+QID39,barriers_other,What are your main barriers when it comes to advising on or supporting Open Science topics?,FALSE,NA
+QID43,support_researchers,"In case you have provided Open Science advice or support, can you give us insights into how has this been received by researchers? ",FALSE,NA
+QID37,uni_support_other,What could the university (e.g. the Academia in Motion programme) do to help research be more open? ,FALSE,NA
+QID38,oscl_support_other,"What could the Open Science Community Leiden (OSCL) do to help engage the research community?
+
+Note that OSCL has two main goals: to stimulate peer-to-peer learning and to help policy-makers with a researcher perspective, in order to shape an open future according to researchers' needs",FALSE,NA
+QID46,Q46,"If you are open to participating in a follow-up interview to further discuss your views and experiences with Open Science, please leave your email below and we will contact you. If you feel more comfortable emailing us, please sent a note to oscl@leidenuniv.nl ",FALSE,NA
+QID47,Q47,Take me to the last page to record my responses!,FALSE,NA
