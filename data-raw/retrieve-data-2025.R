@@ -23,7 +23,7 @@ responses_raw$wave <- 2025
 questions <- survey_questions(surveyID = Sys.getenv("QUALTRICS_SURVEY"))
 questions <- questions |>
   mutate(
-    question = remove_html(question),
+    question = qualtRics:::remove_html(question),
     options = NA
   )
 
