@@ -28,7 +28,7 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
 
       - name: Run retrieve survey responses script
-        run: Rscript data-raw/00_retrieve-data-2025.R
+        run: Rscript data-raw/retrieve-data-2025.R
 
       - name: commit results
         run: |
