@@ -21,9 +21,16 @@ library(bslib)
 library(bsicons)
 
 ggplot2::theme_set(ggplot2::theme_minimal())
-load("data/responses.rda")
-load("data/questions.rda")
-response_data <- responses
+
+responses_2025 <- readr::read_csv("https://raw.githubusercontent.com/bbartholdy/os-survey-unileiden/refs/heads/main/data/2025_responses-wide.csv")
+responses_2023 <- readr::read_csv("https://raw.githubusercontent.com/bbartholdy/os-survey-unileiden/refs/head/main/data/2023_responses-wide.csv")
+questions <- readr::read_csv("data/2025_questions.csv")
+
+# join data from 2023 and 2025
+response_data <- responses_2025 |>
+  select(!`2025_new_q_other`) |>
+  add_row(responses_2023)
+
 questions <- mutate(questions, options = gsub(";", "<br>", options))
 multiple_choice <- c(
   "familiarity",
@@ -35,7 +42,7 @@ multiple_choice <- c(
 sci_support <- c(
   "Policy advisor", 
   "Organisational Professional / Support Staff"
-  )
+)
 sci_staff <- c(
   "PhD candidate",
   "Postdoc",
@@ -348,7 +355,9 @@ output$responses_tbl_2023 <- DT::renderDT({
     count(resp) |>
     arrange(desc(n), .by_group = TRUE) |>
     rename(Option = resp) |> # rename column for table
-    DT::datatable()
+    DT::datatable(
+      options = list(dom = "t")
+    )
 })
 
 output$responses_tbl_2025 <- DT::renderDT({
@@ -360,7 +369,9 @@ output$responses_tbl_2025 <- DT::renderDT({
     count(resp) |>
     arrange(desc(n), .by_group = TRUE) |>
     rename(Option = resp) |> # rename column for table
-    DT::datatable()
+    DT::datatable(
+      options = list(dom = "t")
+    )
 })
 
 ## Data
