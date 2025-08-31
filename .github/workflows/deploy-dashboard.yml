@@ -3,7 +3,10 @@ on:
     paths:
       - 'dashboard.qmd'
       - 'custom.scss'
-      - 'data/2025_responses-wide.csv'
+  workflow_run:
+    workflows: ["Retrieve new survey responses from Qualtrics"]
+    types:
+      - completed
   workflow_dispatch:
 
 name: Deploy dashboard to shinyapps.io
