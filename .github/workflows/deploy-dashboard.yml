@@ -3,6 +3,7 @@ on:
     paths:
       - 'dashboard.qmd'
       - 'custom.scss'
+      - 'data/2025_responses-wide.csv'
   workflow_dispatch:
 
 name: Deploy dashboard to shinyapps.io
