@@ -3,6 +3,7 @@ on:
     paths:
       - 'dashboard.qmd'
       - 'custom.scss'
+  workflow_dispatch:
 
 name: Deploy dashboard to shinyapps.io
 
