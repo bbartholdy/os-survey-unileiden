@@ -9,6 +9,7 @@ jobs:
   update-responses:
     runs-on: ubuntu-latest
     env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       QUALTRICS_TOKEN: ${{ secrets.QUALTRICS_TOKEN }}
       QUALTRICS_SURVEY: ${{ secrets.QUALTRICS_SURVEY }}
     steps:
