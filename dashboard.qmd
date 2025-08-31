@@ -10,7 +10,6 @@ server: shiny
 ```{r}
 #| context: setup
 
-#library(here)
 library(dplyr)
 library(ggplot2)
 library(shiny)
@@ -22,8 +21,8 @@ library(bsicons)
 
 ggplot2::theme_set(ggplot2::theme_minimal())
 
-responses_2025 <- readr::read_csv("https://raw.githubusercontent.com/bbartholdy/os-survey-unileiden/refs/heads/main/data/2025_responses-wide.csv")
-responses_2023 <- readr::read_csv("https://raw.githubusercontent.com/bbartholdy/os-survey-unileiden/refs/head/main/data/2023_responses-wide.csv")
+responses_2025 <- readr::read_csv("data/2025_responses-wide.csv")
+responses_2023 <- readr::read_csv("data/2023_responses-wide.csv")
 questions <- readr::read_csv("data/2025_questions.csv")
 
 # join data from 2023 and 2025
@@ -69,7 +68,6 @@ value_box(
   showcase = bs_icon("reply-all"),
   theme = value_box_theme(bg = "#001158a3", fg = "#fff"),
   strong("Total responses")
-  #min_height = "200px"
 )
 ```
 
@@ -81,7 +79,6 @@ value_box(
   showcase = bs_icon("filter"),
   theme = value_box_theme(bg = "#a8c9daa3", fg = "#001158a3"),
   strong("Responses in Selection"),
-  #min_height = "200px"
 )
 ```
 
@@ -92,7 +89,6 @@ value_box(
   showcase = bs_icon("clock"),
   theme = value_box_theme(bg = "#0070c0a3", fg = "#fff"),
   strong("Median response time")
-  #min_height = "200px"
 )
 ```
 
@@ -105,7 +101,6 @@ value_box(
   showcase = bs_icon("reply-all"),
   theme = value_box_theme(bg = "#001158", fg = "#fff"),
   strong("Total responses")
-  #min_height = "200px"
 )
 ```
 
@@ -117,7 +112,6 @@ value_box(
   showcase = bs_icon("filter"),
   theme = value_box_theme(bg = "#a8c9da", fg = "#001158"),
   strong("Responses in Selection")
-  #min_height = "200px"
 )
 ```
 
@@ -128,7 +122,6 @@ value_box(
   showcase = bs_icon("clock"),
   theme = value_box_theme(bg = "#0070c0", fg = "#fff"),
   strong("Median response time")
-  #min_height = "200px"
 )
 ```
 
@@ -137,7 +130,6 @@ value_box(
 ```{r}
 #| content: card-toolbar
 selectInput("facultyInput", "Faculty", choices = c("All", na.omit(faculties)))
-#radioButtons("group", "Response type", choices = c("Sci staff", "Sci support"))
 ```
 
 ### 2025
