@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # every day at midnight
+    - cron: '0 9-17/1 * * 1-5'  # every hour from 9.00-17.00 on weekdays
 
 name: Retrieve new survey responses from Qualtrics
 
