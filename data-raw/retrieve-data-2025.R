@@ -53,6 +53,6 @@ half_full <- responses_raw |>
     Q29 == "Yes (continue to questions)", # include only consenting respondents
     Progress > 50 # include only surveys 50%+ completed
   ) |>
-  select(!c(StartDate, EndDate, Status, RecordedDate, DistributionChannel, UserLanguage, Q29, `Duration (in seconds)`)) # deselect columns that aren't needed
+  select(!c(StartDate, EndDate, Status, RecordedDate, DistributionChannel, UserLanguage, Q29, `Duration (in seconds)`, email_interview)) # deselect columns that aren't needed
 
 readr::write_csv(half_full, here::here("data/2025_responses-wide.csv"))
