@@ -219,7 +219,6 @@ We are currently in the process of preparing another wave of the survey. It will
 #| title: Question code dictionary
 questions |>
   mutate(question = gsub("\n", "", question)) |>
-  select(!c(qid, force_resp)) |>
   knitr::kable(col.names = c("Code", "Question", "Options"))
 ```
 
