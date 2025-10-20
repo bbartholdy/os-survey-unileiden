@@ -20,25 +20,28 @@ responses_raw <- fetch_survey(
 
 responses_raw$wave <- 2025
 
-questions <- survey_questions(surveyID = Sys.getenv("QUALTRICS_SURVEY"))
-questions <- questions |>
-  mutate(
-    question = qualtRics:::remove_html(question),
-    options = NA
-  )
+# Only create the 2025_questions.csv file if it doesn't exist
+if(!file.exists("data/2025_questions.csv")) {
+  questions <- survey_questions(surveyID = Sys.getenv("QUALTRICS_SURVEY"))
+  questions <- questions |>
+    mutate(
+      question = qualtRics:::remove_html(question),
+      options = NA
+    )
 
 # extract the response options and collapse to a single line
-options <- extract_colmap(responses_raw) |>
-  mutate(options = stringi::stri_extract(description, regex = "(?<=Selected\\sChoice\\s-\\s).*")) |>
-  group_by(ImportId) |>
-  mutate(options = paste0(options, collapse = ";")) |>
-  ungroup() |>
-  distinct(ImportId, .keep_all = TRUE) |>
-  select(!qname) |>
-  right_join(questions, c("ImportId" = "qid"), ) |>
-  select(qname, question, options)
+  options <- extract_colmap(responses_raw) |>
+    mutate(options = stringi::stri_extract(description, regex = "(?<=Selected\\sChoice\\s-\\s).*")) |>
+    group_by(ImportId) |>
+    mutate(options = paste0(options, collapse = ";")) |>
+    ungroup() |>
+    distinct(ImportId, .keep_all = TRUE) |>
+    select(!qname) |>
+    right_join(questions, c("ImportId" = "qid")) |>
+    select(qname, question, options)
 
-if(!file.exists("data/2025_questions.csv")) readr::write_csv(options, "data/2025_questions.csv")
+  readr::write_csv(options, "data/2025_questions.csv")
+}
 
 half_full <- responses_raw |>
   mutate(
