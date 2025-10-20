@@ -301,7 +301,7 @@ output$faculty_response_plot_2025 <- renderPlot({
 
 ## PAGE: Responses
 output$question <- renderText({
-  filter(questions, qname == input$questionInput)$question
+  qualtRics:::remove_html(filter(questions, qname == input$questionInput)$question)
 })
 
 # Reactive plot showing number of responses to selected question
