@@ -12,7 +12,7 @@ steps:
   - name: Pull R image
     image: rocker/tidyverse
     commands:
-      - 'Rscript -e renv::restore()'
+      - 'Rscript -e "renv::restore()"'
   - name: Render dashboard
     image: cynkra/quarto-r:stable
     commands:
