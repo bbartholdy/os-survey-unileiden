@@ -18,6 +18,7 @@ steps:
     commands:
       - quarto render dasboard.qmd
   - name: Deploy shiny app
+    image: rocker/r-base
     commands:
       - 'Rscript -e deploy.R'
     environment:
