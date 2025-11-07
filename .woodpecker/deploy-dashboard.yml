@@ -9,6 +9,10 @@ when:
 name: Deploy dashboard to shinyapps.io
 
 steps:
+  - name: Linux dependencies
+    commands:
+      - 'sudo apt update'
+      - 'sudo apt install libarchive-dev libssl-dev libcurl4-openssl-dev'
   - name: Pull R image
     image: rocker/tidyverse
     commands:
