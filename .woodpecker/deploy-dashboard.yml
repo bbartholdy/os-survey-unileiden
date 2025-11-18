@@ -10,14 +10,11 @@ name: Deploy dashboard to shinyapps.io
 
 steps:
   - name: Pull R image
-    image: rocker/tidyverse
+    image: rocker/verse
     commands:
       - 'sudo apt update'
       - 'sudo apt install -y libarchive-dev libssl-dev libcurl4-openssl-dev'
       - 'Rscript -e "renv::restore()"'
-  - name: Render dashboard and deploy to shinyapps.io
-    image: cynkra/quarto-r:stable
-    commands:
       - quarto render dashboard.qmd
       - Rscript -e deploy.R
     environment:
