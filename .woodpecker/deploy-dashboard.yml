@@ -10,7 +10,7 @@ name: Deploy dashboard to shinyapps.io
 
 steps:
   - name: Pull R image
-    image: rocker/verse
+    image: rocker/verse:4.4.3
     commands:
       - sudo apt update
       - sudo apt install -y libarchive-dev libssl-dev libcurl4-openssl-dev
