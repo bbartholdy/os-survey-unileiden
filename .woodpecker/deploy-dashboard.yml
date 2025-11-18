@@ -15,14 +15,11 @@ steps:
       - 'sudo apt update'
       - 'sudo apt install -y libarchive-dev libssl-dev libcurl4-openssl-dev'
       - 'Rscript -e "renv::restore()"'
-  - name: Render dashboard
+  - name: Render dashboard and deploy to shinyapps.io
     image: cynkra/quarto-r:stable
     commands:
-      - quarto render dasboard.qmd
-  - name: Deploy shiny app
-    image: rocker/r-base
-    commands:
-      - 'Rscript -e deploy.R'
+      - quarto render dashboard.qmd
+      - Rscript -e deploy.R
     environment:
       SHINYAPPS_NAME:
         from_secret: SHINYAPPS_NAME
