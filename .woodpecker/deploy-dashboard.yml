@@ -12,11 +12,11 @@ steps:
   - name: Pull R image
     image: rocker/verse
     commands:
-      - 'sudo apt update'
-      - 'sudo apt install -y libarchive-dev libssl-dev libcurl4-openssl-dev'
-      - 'Rscript -e "renv::restore()"'
+      - sudo apt update
+      - sudo apt install -y libarchive-dev libssl-dev libcurl4-openssl-dev
+      - Rscript -e "renv::restore()"
       - quarto render dashboard.qmd
-      - Rscript -e deploy.R
+      - Rscript deploy.R
     environment:
       SHINYAPPS_NAME:
         from_secret: SHINYAPPS_NAME
