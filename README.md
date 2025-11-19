@@ -4,6 +4,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+🚚 **currently in the process of moving to codeberg:** https://codeberg.org/bbartholdy/os-survey-unileiden
+
 This repository contains the code and data for the dashboard of the Open Science Survey conducted
 at Leiden University in 2023 and again in 2025.
 
