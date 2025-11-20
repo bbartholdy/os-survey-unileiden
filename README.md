@@ -6,7 +6,7 @@
 ![GitHub Tag](https://img.shields.io/github/v/tag/bbartholdy/os-survey-leiden)
 <!-- badges: end -->
 
-🚚 **This is a pull mirror of the codeberg repo:** https://codeberg.org/bbartholdy/os-survey-unileiden
+**This repo is mirrored between [Codeberg](https://codeberg.org/bbartholdy/os-survey-unileiden) -> [GitHub](https://github.com/bbartholdy/os-survey-leiden)**
 
 This repository contains the code and data for the dashboard of the Open Science Survey conducted
 at Leiden University in 2023 and again in 2025.
