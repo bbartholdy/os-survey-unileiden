@@ -4,6 +4,10 @@ logo: "images/oscl-logo.png"
 format: 
   dashboard:
     theme: custom.scss
+    nav-buttons: 
+      - icon: git
+        href: https://codeberg.org/bbartholdy/os-survey-unileiden
+        aria-label: Codeberg repository
 server: shiny
 ---
 
