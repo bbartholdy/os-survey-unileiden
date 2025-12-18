@@ -1,0 +1,18 @@
+when:
+  - event: [cron, manual] # cron job added in repository settings: '1 0 * * *'  # runs daily at 00:01
+
+name: Retrieve new survey responses from Qualtrics
+
+steps:
+  - name: Pull R image
+    image: rocker/verse:4.4.3
+    commands:
+      - Rscript -e "renv::restore()"
+      - sudo apt update && sudo apt install build-essential
+      - Rscript data-raw/retrieve-data-2025.R
+      - echo "test workflow complete"
+    environment:
+      QUALTRICS_TOKEN:
+        from_secret: QUALTRICS_TOKEN
+      QUALTRICS_SURVEY:
+        from_secret: QUALTRICS_SURVEY

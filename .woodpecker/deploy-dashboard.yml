@@ -1,0 +1,26 @@
+when:
+  - event: push
+    path:
+      - 'dashboard.qmd'
+      - 'custom.scss'
+      - 'data/**'
+  - event: manual
+
+name: Deploy dashboard to shinyapps.io
+
+steps:
+  - name: Pull R image
+    image: rocker/verse:4.4.3
+    commands:
+      - sudo apt update
+      - sudo apt install -y libarchive-dev libssl-dev libcurl4-openssl-dev
+      - Rscript -e "renv::restore()"
+      - quarto render dashboard.qmd
+      - Rscript deploy.R
+    environment:
+      SHINYAPPS_NAME:
+        from_secret: SHINYAPPS_NAME
+      SHINYAPPS_TOKEN:
+        from_secret: SHINYAPPS_TOKEN
+      SHINYAPPS_SECRET:
+        from_secret: SHINYAPPS_SECRET    
