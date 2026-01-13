@@ -1,9 +1,9 @@
-
 # osSurveyLeiden
 
 <!-- badges: start -->
-[![MIT license](https://img.shields.io/github/license/bbartholdy/os-survey-leiden)](./LICENSE)
 ![GitHub Tag](https://img.shields.io/github/v/tag/bbartholdy/os-survey-leiden)
+![](https://ci.codeberg.org/api/badges/15513/status.svg)
+[![MIT license](https://img.shields.io/github/license/bbartholdy/os-survey-leiden)](./LICENSE)
 <!-- badges: end -->
 
 **This repo is mirrored between [Codeberg](https://codeberg.org/bbartholdy/os-survey-unileiden) -> [GitHub](https://github.com/bbartholdy/os-survey-leiden)**
