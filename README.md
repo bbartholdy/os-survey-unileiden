@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 ![GitHub Tag](https://img.shields.io/github/v/tag/bbartholdy/os-survey-leiden)
-![](https://ci.codeberg.org/api/badges/15513/status.svg)
+[![status-badge](https://ci.codeberg.org/api/badges/15513/status.svg)](https://ci.codeberg.org/repos/15513)
 [![MIT license](https://img.shields.io/github/license/bbartholdy/os-survey-leiden)](./LICENSE)
 <!-- badges: end -->
 
