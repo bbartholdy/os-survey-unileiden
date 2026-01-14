@@ -7,8 +7,8 @@ steps:
   - name: Pull R image
     image: rocker/verse:4.4.3
     commands:
+      - sudo apt update && sudo apt install build-essential libarchive-dev
       - Rscript -e "renv::restore()"
-      - sudo apt update && sudo apt install build-essential
       - Rscript data-raw/retrieve-data-2025.R
       - echo "test workflow complete"
     environment:
