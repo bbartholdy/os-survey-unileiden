@@ -4,9 +4,6 @@ when:
       - 'dashboard.qmd'
       - 'custom.scss'
       - 'data/**'
-  - event: manual
-
-name: Deploy dashboard to shinyapps.io
 
 steps:
   - name: Pull R image
