@@ -10,8 +10,17 @@ steps:
       - sudo apt-get update && sudo apt-get -y install build-essential libarchive-dev
       - Rscript -e "renv::restore()"
       - Rscript data-raw/retrieve-data-2025.R
+      # Configure Git
+      - git config --global user.email $CI_REPO_OWNER@noreply.codeberg.org
+      - git config --global user.name "Woodpecker CI"
+      - git remote set-url origin https://$CODEBERG_TOKEN@codeberg.org/$CI_REPO.git
+      # Commit and push all static files
+      - git commit -am 'update responses' || echo "No changes to commit"
+      - git push origin || echo "No changes to commit"
     environment:
       QUALTRICS_TOKEN:
         from_secret: QUALTRICS_TOKEN
       QUALTRICS_SURVEY:
         from_secret: QUALTRICS_SURVEY
+      CODEBERG_TOKEN:
+        from_secret: 
