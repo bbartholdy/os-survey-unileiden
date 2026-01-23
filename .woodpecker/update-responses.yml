@@ -1,8 +1,6 @@
 when:
   - event: [cron, manual] # cron job added in repository settings: '1 0 * * *'  # runs daily at 00:01
 
-name: Retrieve new survey responses from Qualtrics
-
 steps:
   - name: Pull R image
     image: rocker/verse:4.4.3
@@ -23,4 +21,4 @@ steps:
       QUALTRICS_SURVEY:
         from_secret: QUALTRICS_SURVEY
       CODEBERG_TOKEN:
-        from_secret: 
+        from_secret: CODEBERG_TOKEN
